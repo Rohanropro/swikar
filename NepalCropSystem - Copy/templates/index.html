@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nepal Agriculture | Intelligence Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">🌿</div>
+
+            <div>
+                <h2>Nepal Agriculture</h2>
+                <p>INTELLIGENCE PLATFORM</p>
+            </div>
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+
+        <nav class="navigation">
+            <a href="#dashboard" class="nav-item active" data-page="dashboard">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="#regional" class="nav-item" data-page="regional">
+                <span>⌘</span> Regional Comparison
+            </a>
+
+            <a href="#environment" class="nav-item" data-page="environment">
+                <span>♧</span> Environmental Analysis
+            </a>
+
+            <a href="#yield" class="nav-item" data-page="yield">
+                <span>↗</span> Yield Analysis
+            </a>
+
+            <a href="#data" class="nav-item" data-page="data">
+                <span>▤</span> Data Explorer
+            </a>
+        </nav>
+
+        <div class="nav-label management-label">MANAGEMENT</div>
+
+        <nav class="navigation">
+            <a href="#insights" class="nav-item" data-page="insights">
+                <span>▧</span> Quick Insights
+            </a>
+
+            <a href="#about" class="nav-item" data-page="about">
+                <span>ⓘ</span> About & Sources
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="help-card">
+                <span class="help-icon">?</span>
+                <div>
+                    <strong>Need help?</strong>
+                    <p>Explore agricultural trends and regional data.</p>
+                    <a href="#about" data-page="about">View documentation →</a>
+                </div>
+            </div>
+
+            <div class="profile">
+                <div class="profile-icon">AI</div>
+                <div>
+                    <strong>Research Analyst</strong>
+                    <p>Project workspace</p>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+        <!-- HEADER -->
+        <header class="topbar">
+
+            <button class="mobile-menu" id="mobileMenu">☰</button>
+
+            <div class="breadcrumb">
+                <span>Workspace</span>
+                <span>/</span>
+                <strong id="pageTitle">Dashboard</strong>
+            </div>
+
+            <div class="topbar-right">
+                <span class="connection-status">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="connectionText">Connecting...</span>
+                </span>
+
+                <div class="profile-top">
+                    <div class="profile-icon">AI</div>
+                    <div>
+                        <strong>Research Analyst</strong>
+                        <small>Project workspace</small>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+        <!-- CONTENT -->
+        <section class="content-area">
+
+            <div class="page-heading">
+                <div>
+                    <h1 id="mainHeading">Nepal Crop Production Dashboard</h1>
+                    <p>Crop Production & Environmental Analysis</p>
+                </div>
+
+                <div class="live-badge">
+                    <span class="status-dot"></span>
+                    LIVE DATABASE
+                </div>
+            </div>
+
+            <!-- FILTERS -->
+            <section class="filter-panel">
+
+                <div class="filter-heading">
+                    <div>
+                        <h3>Explore agricultural data</h3>
+                        <p>Filter the dashboard using actual database records.</p>
+                    </div>
+
+                    <button id="resetFilters" class="reset-button">↻ Reset filters</button>
+                </div>
+
+                <div class="filters">
+
+                    <div class="filter-group">
+                        <label for="seasonFilter">Season</label>
+                        <select id="seasonFilter">
+                            <option value="">All Seasons</option>
+                            <option value="Winter">Winter</option>
+                            <option value="Spring">Spring</option>
+                            <option value="Summer">Summer</option>
+                            <option value="Autumn">Autumn</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="districtFilter">District</label>
+                        <select id="districtFilter">
+                            <option value="">All Districts</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="cropFilter">Crop</label>
+                        <select id="cropFilter">
+                            <option value="">All Crops</option>
+                        </select>
+                    </div>
+
+            </section>
+
+            <!-- KPI CARDS -->
+            <section class="kpi-grid">
+
+                <article class="kpi-card">
+                    <div class="kpi-top">
+                        <span>Total Crops</span>
+                        <span class="kpi-icon green">🌾</span>
+                    </div>
+                    <h2 id="totalCrops">—</h2>
+                    <p>Crop varieties in database</p>
+                </article>
+
+                <article class="kpi-card">
+                    <div class="kpi-top">
+                        <span>Total Districts</span>
+                        <span class="kpi-icon olive">⌖</span>
+                    </div>
+                    <h2 id="totalDistricts">—</h2>
+                    <p>Districts covered</p>
+                </article>
+
+                <article class="kpi-card">
+                    <div class="kpi-top">
+                        <span>Production Records</span>
+                        <span class="kpi-icon orange">▥</span>
+                    </div>
+                    <h2 id="totalRecords">—</h2>
+                    <p>Records matching filters</p>
+                </article>
+
+                <article class="kpi-card">
+                    <div class="kpi-top">
+                        <span>Climate Records</span>
+                        <span class="kpi-icon blue">☁</span>
+                    </div>
+                    <h2 id="totalClimate">—</h2>
+                    <p>Monthly climate observations</p>
+                </article>
+
+            </section>
+
+            <!-- PRODUCTION CHARTS -->
+            <section class="section-heading">
+                <div>
+                    <h2>Production Intelligence</h2>
+                    <p>Historical patterns and regional distribution</p>
+                </div>
+                <span class="unit-label">PRODUCTION · MT</span>
+            </section>
+
+            <section class="chart-grid">
+
+                <article class="chart-card">
+                    <div class="card-heading">
+                        <div>
+                            <h3>Yearly Production Trend</h3>
+                            <p>Total reported crop production over time</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="yearlyChart"></canvas>
+                        <div class="chart-empty" id="yearlyEmpty">
+                            No production records available for this selection.
+                        </div>
+                    </div>
+                </article>
+
+                <article class="chart-card">
+                    <div class="card-heading">
+                        <div>
+                            <h3>Production by Region</h3>
+                            <p>Compare ecological regions of Nepal</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="regionChart"></canvas>
+                        <div class="chart-empty" id="regionEmpty">
+                            No regional production data available.
+                        </div>
+                    </div>
+                </article>
+
+                <article class="chart-card">
+                    <div class="card-heading">
+                        <div>
+                            <h3>Crop Production Mix</h3>
+                            <p>Share of total production by crop</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container doughnut-container">
+                        <canvas id="cropChart"></canvas>
+                        <div class="chart-empty" id="cropEmpty">
+                            No crop distribution data available.
+                        </div>
+                    </div>
+                </article>
+
+                <article class="chart-card">
+                    <div class="card-heading">
+                        <div>
+                            <h3>Top Yielding Districts</h3>
+                            <p>Weighted crop yield by district</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="yieldChart"></canvas>
+                        <div class="chart-empty" id="yieldEmpty">
+                            No district yield data available.
+                        </div>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- CLIMATE -->
+            <section class="section-heading">
+                <div>
+                    <h2>Environmental Intelligence</h2>
+                    <p>Monthly and seasonal climate observations</p>
+                </div>
+                <span class="unit-label climate-label">CLIMATE DATA</span>
+            </section>
+
+            <section class="chart-grid">
+
+                <article class="chart-card">
+                    <div class="card-heading">
+                        <div>
+                            <h3>Rainfall Trend</h3>
+                            <p>Recorded monthly rainfall</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="rainChart"></canvas>
+                        <div class="chart-empty" id="rainEmpty">
+                            No rainfall records available.
+                        </div>
+                    </div>
+                </article>
+
+                <article class="chart-card">
+                    <div class="card-heading">
+                        <div>
+                            <h3>Average Temperature</h3>
+                            <p>Monthly mean temperature (°C)</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="temperatureChart"></canvas>
+                        <div class="chart-empty" id="temperatureEmpty">
+                            No temperature records available.
+                        </div>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- SEASONAL SUMMARY -->
+            <article class="chart-card seasonal-card">
+                <div class="card-heading">
+                    <div>
+                        <h3>Seasonal Climate Summary</h3>
+                        <p>Winter · Spring · Summer · Autumn</p>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Season</th>
+                                <th>Mean Temperature (°C)</th>
+                                <th>Total Rainfall</th>
+                                <th>Humidity (%)</th>
+                                <th>Solar Radiation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="seasonalTable">
+                            <tr>
+                                <td colspan="5" class="table-message">Loading climate data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <!-- INSIGHTS -->
+            <section class="section-heading">
+                <div>
+                    <h2>Quick Insights</h2>
+                    <p>Automatically calculated from current database selection</p>
+                </div>
+            </section>
+
+            <section class="insight-grid" id="insightsContainer">
+                <div class="insight-card">Loading insights...</div>
+            </section>
+
+            <!-- RECORDS TABLE -->
+            <article class="chart-card records-card">
+
+                <div class="card-heading">
+                    <div>
+                        <h3>Production Records</h3>
+                        <p>Actual records retrieved from MySQL</p>
+                    </div>
+
+                    <span class="record-count" id="recordCount">Loading...</span>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Agricultural Year</th>
+                                <th>District</th>
+                                <th>Crop</th>
+                                <th>Area (ha)</th>
+                                <th>Production (MT)</th>
+                                <th>Yield (kg/ha)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recordsTable">
+                            <tr>
+                                <td colspan="6" class="table-message">Loading production records...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button id="prevPage" disabled>← Previous</button>
+                    <span id="pageInfo">Page 1</span>
+                    <button id="nextPage" disabled>Next →</button>
+                </div>
+
+            </article>
+
+            <!-- FOOTER -->
+            <footer class="footer">
+                <span>Nepal Crop Production Trend Analysis & Yield Prediction System</span>
+                <span>Powered by Flask · MySQL · Chart.js</span>
+            </footer>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+
+</body>
+</html>
